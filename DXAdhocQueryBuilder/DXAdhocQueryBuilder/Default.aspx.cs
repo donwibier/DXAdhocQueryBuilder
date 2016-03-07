@@ -29,13 +29,7 @@ namespace DXAdhocQueryBuilder
             AddColumns(sender as ASPxGridView);
         }
 
-        static readonly Dictionary<Type, Type> columnMap = new Dictionary<Type, Type>()
-        {
-            { typeof(int), typeof(GridViewDataSpinEditColumn) },
-            { typeof(DateTime), typeof(GridViewDataDateColumn) },
-            { typeof(byte[]), typeof(GridViewDataBinaryImageColumn) }
-            // more datatype/columntype mappings here...
-        };
+        #region Column creation
 
         private void AddColumns(ASPxGridView grid)
         {
@@ -51,7 +45,15 @@ namespace DXAdhocQueryBuilder
             grid.KeyFieldName = dw.Table.Columns[0].ColumnName;
             //cardView.Columns[0].Visible = false;
         }
-        private void AddColumn(ASPxGridView grid, string fieldName, Type fieldType)
+
+        static readonly Dictionary<Type, Type> columnMap = new Dictionary<Type, Type>()
+        {
+            { typeof(int), typeof(GridViewDataSpinEditColumn) },
+            { typeof(DateTime), typeof(GridViewDataDateColumn) },
+            { typeof(byte[]), typeof(GridViewDataBinaryImageColumn) }
+            // more datatype/columntype mappings here...
+        };
+        private static void AddColumn(ASPxGridView grid, string fieldName, Type fieldType)
         {
             Type colType = columnMap.ContainsKey(fieldType) ? columnMap[fieldType] : typeof(GridViewDataTextColumn);
             GridViewDataColumn c = Activator.CreateInstance(colType) as GridViewDataColumn;
@@ -59,5 +61,6 @@ namespace DXAdhocQueryBuilder
             grid.Columns.Add(c);
         }
 
+        #endregion
     }
 }

@@ -29,13 +29,7 @@ namespace DXAdhocQueryBuilder
             AddColumns(sender as ASPxCardView);
         }
 
-        static readonly Dictionary<Type, Type> columnMap = new Dictionary<Type, Type>()
-        {
-            { typeof(int), typeof(CardViewSpinEditColumn) },
-            { typeof(DateTime), typeof(CardViewDateColumn) },
-            { typeof(byte[]), typeof(CardViewBinaryImageColumn) }
-            // more datatype/columntype mappings here...
-        };
+        #region Column Creation
 
         private void AddColumns(ASPxCardView cardView)
         {
@@ -51,12 +45,23 @@ namespace DXAdhocQueryBuilder
             cardView.KeyFieldName = dw.Table.Columns[0].ColumnName;
             //cardView.Columns[0].Visible = false;
         }
-        private void AddColumn(ASPxCardView cardView, string fieldName, Type fieldType)
+
+        static readonly Dictionary<Type, Type> columnMap = new Dictionary<Type, Type>()
+        {
+            { typeof(int), typeof(CardViewSpinEditColumn) },
+            { typeof(DateTime), typeof(CardViewDateColumn) },
+            { typeof(byte[]), typeof(CardViewBinaryImageColumn) }
+            // more datatype/columntype mappings here...
+        };
+
+        private static void AddColumn(ASPxCardView cardView, string fieldName, Type fieldType)
         {
             Type colType = columnMap.ContainsKey(fieldType) ? columnMap[fieldType] : typeof(CardViewTextColumn);
             CardViewColumn c = Activator.CreateInstance(colType) as CardViewColumn;
             c.FieldName = fieldName;
             cardView.Columns.Add(c);
         }
+
+        #endregion
     }
 }

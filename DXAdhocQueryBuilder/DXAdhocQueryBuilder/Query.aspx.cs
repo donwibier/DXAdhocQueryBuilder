@@ -13,7 +13,7 @@ namespace DXAdhocQueryBuilder
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["TableDef"] != null)
+            if (Session["T"] != null)
             {
                 ASPxQueryBuilder1.OpenConnection("ApplicationServices", (TableQuery)Session["T"]);
             }
